@@ -1,9 +1,12 @@
 import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
+import { connection } from "next/server";
 
 // Talks to Supabase as the logged-in user (publishable key + their login cookie),
 // so row-level security decides what they can see and change.
 export async function createClient() {
+  // Per-user data: always render at request time, never prerender.
+  await connection();
   const cookieStore = await cookies();
 
   return createServerClient(
