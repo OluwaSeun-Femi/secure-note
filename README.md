@@ -1,36 +1,63 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Secure Notes
 
-## Getting Started
+Private progress notes for the tutors of a lesson centre. Each tutor signs
+up with an email and password and sees only their own notes — the privacy is
+enforced by the database, not the website, so a mistake in the site can't
+leak a note.
 
-First, run the development server:
+Built by Group 4 of the AI-fullstack cohort (week 4). The brief and
+acceptance criteria are in [SPEC.md](./SPEC.md).
+
+## Live link
+
+_Add your Vercel link here after deploying._
+
+## How it works
+
+- **Next.js 16** (App Router, server actions, Tailwind 4), deployed on Vercel.
+- **Supabase Auth** keeps the login in cookies; `proxy.ts` checks it with
+  `getUser()` on every request and sends logged-out visitors to `/login`.
+- **Row-level security** is on for the `notes` table with four policies
+  (select, insert, update, delete), each `user_id = auth.uid()`. The app
+  never sends a `user_id` and never filters by it — the database fills it in
+  and refuses the wrong person.
+- The app uses only the project URL and the **publishable key**. The
+  database password and `service_role`/`sb_secret_` keys skip row-level
+  security, so they appear nowhere in this app.
+
+## Set up Supabase
+
+1. Create (or open) the Supabase project and run [db/schema.sql](./db/schema.sql)
+   once in **SQL Editor**. **Authentication → Policies** should then show RLS
+   enabled with 4 policies on `notes`.
+2. Turn off **Confirm email** under Authentication → Sign In / Providers.
+3. Copy the **Project URL** (ends in `.supabase.co`) and the publishable key
+   from **Project Settings → Data API**.
+
+## Run it locally
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Create `.env.local` in this folder (it stays out of Git):
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```
+NEXT_PUBLIC_SUPABASE_URL=https://<your-ref>.supabase.co
+NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=sb_publishable_...
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Then `npm run dev` and open http://localhost:3000. Sign up with any email —
+nothing is sent.
 
-## Learn More
+## Deploy
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+npx vercel link
+npx vercel env add NEXT_PUBLIC_SUPABASE_URL production
+npx vercel env add NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY production
+npx vercel --prod
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Add both settings before `vercel --prod`: `NEXT_PUBLIC_` values are baked in
+at build time.
