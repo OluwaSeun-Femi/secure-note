@@ -14,61 +14,64 @@ export default function LoginPage() {
   );
 
   return (
-    <main className="flex flex-1 items-center justify-center bg-zinc-50 px-4 py-12">
-      <div className="w-full max-w-sm">
-        <h1 className="mb-1 text-2xl font-semibold text-zinc-900">Secure Notes</h1>
-        <p className="mb-6 text-sm text-zinc-600">
-          Log in, or sign up with your email.
-        </p>
+    <main className="mx-auto flex w-full max-w-sm flex-1 flex-col justify-center px-4 py-12">
+      <h1 className="font-serif text-3xl font-semibold leading-tight">
+        Secure Notes
+      </h1>
+      <p className="mt-2 text-[15px] leading-7 text-ink-soft">
+        Each tutor sees only their own notes. Log in, or sign up with your
+        email.
+      </p>
 
-        <form className="space-y-4 rounded-xl bg-white p-6 shadow-sm ring-1 ring-zinc-200">
-          <label className="block">
-            <span className="mb-1 block text-sm font-medium text-zinc-800">Email</span>
-            <input
-              name="email"
-              type="email"
-              autoComplete="email"
-              required
-              defaultValue={state?.email}
-              className="w-full rounded-lg border border-zinc-300 px-3 py-2.5 text-base text-zinc-900 outline-none focus:border-zinc-900 focus:ring-1 focus:ring-zinc-900"
-            />
-          </label>
+      <form className="mt-8 space-y-4 rounded-[10px] border border-rule bg-sheet p-5 sm:p-6">
+        <label className="block">
+          <span className="mb-1.5 block text-sm font-medium">Email</span>
+          <input
+            name="email"
+            type="email"
+            autoComplete="email"
+            required
+            defaultValue={state?.email}
+            className="h-11 w-full rounded-lg border border-rule bg-sheet px-3.5 text-base text-ink focus:border-biro focus:outline-none"
+          />
+        </label>
 
-          <label className="block">
-            <span className="mb-1 block text-sm font-medium text-zinc-800">Password</span>
-            <input
-              name="password"
-              type="password"
-              autoComplete="current-password"
-              required
-              minLength={8}
-              className="w-full rounded-lg border border-zinc-300 px-3 py-2.5 text-base text-zinc-900 outline-none focus:border-zinc-900 focus:ring-1 focus:ring-zinc-900"
-            />
-            <span className="mt-1 block text-xs text-zinc-500">At least 8 characters.</span>
-          </label>
+        <label className="block">
+          <span className="mb-1.5 block text-sm font-medium">Password</span>
+          <input
+            name="password"
+            type="password"
+            autoComplete="current-password"
+            required
+            minLength={8}
+            className="h-11 w-full rounded-lg border border-rule bg-sheet px-3.5 text-base text-ink focus:border-biro focus:outline-none"
+          />
+          <span className="mt-1.5 block text-xs text-ink-soft">
+            At least 8 characters.
+          </span>
+        </label>
 
-          <div className="flex gap-3 pt-1">
-            <button
-              formAction={(formData) => dispatch({ kind: "logIn", formData })}
-              disabled={pending}
-              className="flex-1 rounded-lg bg-zinc-900 px-4 py-2.5 text-sm font-medium text-white hover:bg-zinc-700 disabled:opacity-60"
-            >
-              Log in
-            </button>
-            <button
-              formAction={(formData) => dispatch({ kind: "signUp", formData })}
-              disabled={pending}
-              className="flex-1 rounded-lg border border-zinc-300 px-4 py-2.5 text-sm font-medium text-zinc-900 hover:bg-zinc-100 disabled:opacity-60"
-            >
-              Sign up
-            </button>
-          </div>
-        </form>
+        <div className="flex gap-3 pt-1">
+          <button
+            formAction={(formData) => dispatch({ kind: "logIn", formData })}
+            disabled={pending}
+            className="h-11 flex-1 rounded-lg bg-biro text-sm font-medium text-white transition-colors hover:bg-biro-deep disabled:opacity-60"
+          >
+            Log in
+          </button>
+          <button
+            formAction={(formData) => dispatch({ kind: "signUp", formData })}
+            disabled={pending}
+            className="h-11 flex-1 rounded-lg border border-rule text-sm font-medium text-ink transition-colors hover:border-ink-soft"
+          >
+            Sign up
+          </button>
+        </div>
+      </form>
 
-        <p role="status" aria-live="polite" className="mt-4 min-h-5 text-sm text-red-700">
-          {state?.message}
-        </p>
-      </div>
+      <p role="status" aria-live="polite" className="mt-4 min-h-5 text-sm text-margin">
+        {state?.message}
+      </p>
     </main>
   );
 }

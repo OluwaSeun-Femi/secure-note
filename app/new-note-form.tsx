@@ -9,45 +9,56 @@ export function NewNoteForm() {
   return (
     <form
       action={formAction}
-      className="space-y-3 rounded-xl bg-white p-4 shadow-sm ring-1 ring-zinc-200 sm:p-5"
+      aria-label="New note"
+      onKeyDown={(e) => {
+        if ((e.ctrlKey || e.metaKey) && e.key === "Enter") {
+          e.currentTarget.requestSubmit();
+        }
+      }}
+      className="relative mt-6 overflow-hidden rounded-[10px] border border-rule bg-sheet"
     >
-      <h2 className="text-base font-semibold text-zinc-900">New note</h2>
-
-      <label className="block">
-        <span className="mb-1 block text-sm font-medium text-zinc-800">Title</span>
+      <span
+        aria-hidden
+        className="pointer-events-none absolute inset-y-0 left-6 w-px bg-margin/50"
+      />
+      <div className="py-4 pl-10 pr-4 sm:pr-5">
+        <label className="sr-only" htmlFor="new-title">
+          Title
+        </label>
         <input
+          id="new-title"
           name="title"
           maxLength={200}
           defaultValue={state?.title}
-          placeholder="e.g. Tolu, maths"
-          className="w-full rounded-lg border border-zinc-300 px-3 py-2.5 text-base text-zinc-900 outline-none focus:border-zinc-900 focus:ring-1 focus:ring-zinc-900"
+          placeholder="Tolu, maths"
+          className="w-full border-b border-rule bg-transparent pb-2.5 font-serif text-lg font-semibold text-ink placeholder:font-sans placeholder:text-base placeholder:font-normal placeholder:text-ink-soft/70 focus:border-biro focus:outline-none"
         />
-      </label>
-
-      <label className="block">
-        <span className="mb-1 block text-sm font-medium text-zinc-800">Note</span>
+        <label className="sr-only" htmlFor="new-body">
+          Note
+        </label>
         <textarea
+          id="new-body"
           name="body"
           rows={4}
           defaultValue={state?.body}
-          className="w-full rounded-lg border border-zinc-300 px-3 py-2.5 text-base text-zinc-900 outline-none focus:border-zinc-900 focus:ring-1 focus:ring-zinc-900"
+          placeholder="What happened in the lesson?"
+          className="mt-3 w-full resize-y bg-transparent text-[15px] leading-7 text-ink placeholder:text-ink-soft/70 focus:outline-none"
         />
-      </label>
-
-      <div className="flex items-center gap-3">
-        <button
-          disabled={pending}
-          className="rounded-lg bg-zinc-900 px-5 py-2.5 text-sm font-medium text-white hover:bg-zinc-700 disabled:opacity-60"
-        >
-          {pending ? "Saving…" : "Save note"}
-        </button>
-        <p
-          role="status"
-          aria-live="polite"
-          className={`text-sm ${state?.ok ? "text-green-700" : "text-red-700"}`}
-        >
-          {state?.message}
-        </p>
+        <div className="mt-1 flex items-center justify-between gap-3 border-t border-rule pt-3">
+          <p
+            role="status"
+            aria-live="polite"
+            className={`text-sm ${state?.ok ? "text-biro" : "text-margin"}`}
+          >
+            {state?.message}
+          </p>
+          <button
+            disabled={pending}
+            className="h-11 shrink-0 rounded-lg bg-biro px-5 text-sm font-medium text-white transition-colors hover:bg-biro-deep disabled:opacity-60"
+          >
+            {pending ? "Saving…" : "Save note"}
+          </button>
+        </div>
       </div>
     </form>
   );
