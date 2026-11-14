@@ -48,7 +48,7 @@ export default function LoginPage() {
         <div className="flex items-center justify-between">
           <span className="flex items-center gap-2 font-serif text-lg font-semibold">
             <LogoIcon />
-            Secure Notes
+            Asiri
           </span>
           <ThemeToggle />
         </div>

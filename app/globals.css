@@ -1,6 +1,6 @@
 @import "tailwindcss";
 
-/* Secure Notes tokens: paper and ink, biro-indigo accent, five note tints. */
+/* Asiri tokens: paper and ink, biro-indigo accent, five note tints. */
 :root {
   --bg: #f6f5f1;
   --surface: #ffffff;

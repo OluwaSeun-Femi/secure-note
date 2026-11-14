@@ -21,7 +21,7 @@ export default function NotesPage({ searchParams }: { searchParams: Search }) {
       <header className="flex items-center justify-between gap-3">
         <span className="flex min-w-0 items-center gap-2 font-serif text-lg font-semibold">
           <LogoIcon />
-          Secure Notes
+          Asiri
         </span>
         <div className="flex shrink-0 items-center gap-2">
           <ThemeToggle />

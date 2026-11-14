@@ -14,7 +14,7 @@ const literata = Literata({
 });
 
 export const metadata: Metadata = {
-  title: "Secure Notes",
+  title: "Asiri",
   description: "Each tutor's notes, kept to themselves.",
 };
 

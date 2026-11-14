@@ -1,6 +1,7 @@
-# Secure Notes
+# Asiri
 
-Private progress notes for the tutors of a lesson centre. Each tutor signs
+**Asiri** (Yoruba *àṣírí* — “secret”) is private progress notes for the tutors
+of a lesson centre. Each tutor signs
 up with an email and password and sees only their own notes — the privacy is
 enforced by the database, not the website, so a mistake in the site can't
 leak a note.
