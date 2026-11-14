@@ -8,7 +8,7 @@ import { EditNoteForm } from "./edit-form";
 
 export default function EditNotePage({ params }: { params: Promise<{ id: string }> }) {
   return (
-    <main className="mx-auto w-full max-w-xl flex-1 px-4 pb-16 pt-6 sm:pt-8">
+    <main className="mx-auto w-full max-w-2xl flex-1 px-4 pb-16 pt-6 sm:px-6 sm:pt-8">
       <p>
         <Link
           href="/"

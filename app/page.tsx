@@ -4,7 +4,7 @@ import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { formatLagos, wasEdited } from "@/lib/dates";
 import { logOut } from "./actions";
-import { LogoIcon, NotebookIcon, PencilIcon } from "./icons";
+import { LogoIcon, NotebookIcon, PencilIcon, ShieldIcon } from "./icons";
 import { NewNoteForm } from "./new-note-form";
 import { SearchBox } from "./search-box";
 import { ThemeToggle } from "./theme";
@@ -17,7 +17,7 @@ const tint = (id: number) => `var(--note-${TINTS[id % TINTS.length]})`;
 
 export default function NotesPage({ searchParams }: { searchParams: Search }) {
   return (
-    <main className="mx-auto w-full max-w-xl flex-1 px-4 pb-16 pt-6 sm:pt-8">
+    <main className="mx-auto w-full max-w-6xl flex-1 px-4 pb-16 pt-6 sm:px-6 sm:pt-8">
       <header className="flex items-center justify-between gap-3">
         <span className="flex min-w-0 items-center gap-2 font-serif text-lg font-semibold">
           <LogoIcon />
@@ -33,22 +33,30 @@ export default function NotesPage({ searchParams }: { searchParams: Search }) {
         </div>
       </header>
 
-      <div className="mt-8">
-        <h1 className="font-serif text-[1.7rem] font-semibold leading-tight tracking-[-0.01em]">
-          My notes
-        </h1>
-        <Suspense
-          fallback={<p className="mt-1.5 h-5 w-48 rounded bg-sunken" aria-hidden />}
-        >
-          <LoggedInAs />
+      <div className="mt-8 lg:grid lg:grid-cols-[330px_minmax(0,1fr)] lg:items-start lg:gap-10 xl:gap-14">
+        <aside className="lg:sticky lg:top-8">
+          <h1 className="font-serif text-[1.7rem] font-semibold leading-tight tracking-[-0.01em]">
+            My notes
+          </h1>
+          <Suspense
+            fallback={<p className="mt-1.5 h-5 w-48 rounded bg-sunken" aria-hidden />}
+          >
+            <LoggedInAs />
+          </Suspense>
+
+          <NewNoteForm />
+
+          <p className="mt-6 hidden items-start gap-2 text-[13px] leading-5 text-ink-faint lg:flex">
+            <ShieldIcon size={15} className="mt-0.5 shrink-0" />
+            Only you can see these notes. The database itself refuses everyone
+            else.
+          </p>
+        </aside>
+
+        <Suspense fallback={<ListSkeleton />}>
+          <SearchAndNotes searchParams={searchParams} />
         </Suspense>
       </div>
-
-      <NewNoteForm />
-
-      <Suspense fallback={<ListSkeleton />}>
-        <SearchAndNotes searchParams={searchParams} />
-      </Suspense>
     </main>
   );
 }
@@ -83,7 +91,7 @@ async function SearchAndNotes({ searchParams }: { searchParams: Search }) {
   const { data: notes, error } = await query;
 
   return (
-    <section className="mt-8">
+    <section className="mt-8 lg:mt-0">
       <SearchBox initial={q} />
       {error ? (
         <p className="mt-6 text-sm text-danger">
@@ -111,7 +119,7 @@ function NotesList({
 }) {
   if (notes.length === 0) {
     return (
-      <div className="py-12 text-center">
+      <div className="py-12 text-center lg:py-20">
         <NotebookIcon size={34} className="mx-auto text-ink-faint" />
         <p className="mt-3 text-sm text-ink-soft">
           {q ? (
@@ -125,7 +133,7 @@ function NotesList({
               </Link>
             </>
           ) : (
-            "No notes yet. Take your first one above."
+            "No notes yet. Take your first one."
           )}
         </p>
       </div>
@@ -139,7 +147,7 @@ function NotesList({
           ? `${notes.length} ${notes.length === 1 ? "note matches" : "notes match"} “${q}”`
           : `You have ${notes.length} ${notes.length === 1 ? "note" : "notes"}.`}
       </p>
-      <ul className="mt-3 space-y-4">
+      <ul className="mt-3 grid grid-cols-1 items-start gap-4 sm:grid-cols-2 xl:grid-cols-3">
         {notes.map((note) => (
           <li
             key={note.id}
@@ -170,7 +178,7 @@ function NotesList({
               )}
             </p>
             {note.body && (
-              <p className="mt-2 whitespace-pre-wrap break-words text-[15px] leading-7 text-ink/85">
+              <p className="mt-2 line-clamp-[12] whitespace-pre-wrap break-words text-[15px] leading-7 text-ink/85">
                 {note.body}
               </p>
             )}
@@ -183,11 +191,12 @@ function NotesList({
 
 function ListSkeleton() {
   return (
-    <div className="mt-8" aria-hidden>
+    <div className="mt-8 lg:mt-0" aria-hidden>
       <div className="h-12 rounded-2xl border border-line bg-surface" />
-      <div className="mt-5 space-y-4">
-        <div className="h-24 rounded-2xl bg-sunken" />
-        <div className="h-24 rounded-2xl bg-sunken/70" />
+      <div className="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
+        <div className="h-28 rounded-2xl bg-sunken" />
+        <div className="h-28 rounded-2xl bg-sunken/70" />
+        <div className="hidden h-28 rounded-2xl bg-sunken/50 xl:block" />
       </div>
     </div>
   );
